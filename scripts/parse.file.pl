@@ -67,7 +67,7 @@ Exit value: 0.
 
 =item o -encoding aString
 
-aString takes values such as 'utf-8', and the code converts this into '<:encoding(utf-8)'.
+String takes values such as 'utf-8', and the code converts this into '<:encoding(utf-8)'.
 
 This option is rarely needed for input, but may be for output.
 

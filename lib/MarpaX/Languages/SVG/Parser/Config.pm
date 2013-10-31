@@ -13,11 +13,13 @@ use Moo;
 
 use Path::Tiny; # For path().
 
+use Types::Standard qw/Any Str/;
+
 has config =>
 (
 	default  => sub{return {} },
 	is       => 'rw',
-#	isa      => 'HashRef',
+	isa      => Any, # Cannot use HashRef. See line 65.
 	required => 0,
 );
 
@@ -25,7 +27,7 @@ has config_file_path =>
 (
 	default  => sub{return ''},
 	is       => 'rw',
-#	isa      => 'Str',
+	isa      => Any, # Can't use Str. See line 61.
 	required => 0,
 );
 
@@ -33,11 +35,11 @@ has section =>
 (
 	default  => sub{return ''},
 	is       => 'rw',
-#	isa      => 'Str',
+	isa      => Str,
 	required => 0,
 );
 
-our $VERSION = '1.05';
+our $VERSION = '1.01';
 
 # -----------------------------------------------
 

@@ -62,7 +62,6 @@ $class -> new
 		'Path::Tiny'              => 0.034,
 #		'perl'                    => undef, # For the utf8 stuff. # Version is unparsable.
 		'Pod::Usage'              => 1.63,
-		'Scalar::Util'            => 1.32,
 		'Set::Array'              => 0.30,
 		'strict'                  => 0,
 		'Text::CSV::Encoded'      => 0.22,

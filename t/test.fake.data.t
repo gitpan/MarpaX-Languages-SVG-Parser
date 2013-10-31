@@ -23,6 +23,8 @@ for my $file (MarpaX::Languages::SVG::Parser::Utils -> new -> get_files('data', 
 	$attribute = basename($file);
 	$attribute =~ s/^(\w+)(\..+)$/$1/;
 
+	# Could use Try::Tiny, but at home I want to see it die if it fails.
+
 	(undef, undef, $result) = capture{system($^X, '-Ilib', 'scripts/test.file.pl', '-a', $attribute, '-i', $file)};
 
 	ok($result == 0, "Processed $file");

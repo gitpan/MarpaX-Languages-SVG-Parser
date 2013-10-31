@@ -13,12 +13,12 @@
     12  attribute   class                 graph
     13  attribute   id                    graph0
     14  raw         transform             scale(1 1) rotate(0) translate(4 276)
-    15  command     -                     scale
+    15  command     scale                 -
     16  float       1                     1
     17  float       2                     1
-    18  command     -                     rotate
+    18  command     rotate                -
     19  integer     1                     0
-    20  command     -                     translate
+    20  command     translate             -
     21  float       1                     4
     22  float       2                     276
     23  tag         title                 open
@@ -64,6 +64,8 @@
     63  content     text                  The Orient Express
     64  tag         text                  close
     65  content     g                     
+
+
     66  tag         g                     close
     67  tag         g                     open
     68  attribute   class                 node
@@ -89,6 +91,8 @@
     88  content     text                  Reichwaldstraße
     89  tag         text                  close
     90  content     g                     
+
+
     91  tag         g                     close
     92  tag         g                     open
     93  attribute   class                 edge
@@ -98,10 +102,10 @@
     97  tag         title                 close
     98  tag         path                  open
     99  raw         d                     M131.213,-236.301C120.505,-226.782 106.922,-214.708 95.1813,-204.272
-   100  command     -                     M
+   100  command     M                     -
    101  float       1                     131.213
    102  float       2                     -236.301
-   103  command     -                     C
+   103  command     C                     -
    104  float       1                     120.505
    105  float       2                     -226.782
    106  float       3                     106.922
@@ -127,6 +131,8 @@
    126  content     polygon               
    127  tag         polygon               close
    128  content     g                     
+
+
    129  tag         g                     close
    130  tag         g                     open
    131  attribute   class                 node
@@ -152,6 +158,8 @@
    151  content     text                  ʎ ʏ ʐ ʑ ʒ ʓ ʙ ʚ
    152  tag         text                  close
    153  content     g                     
+
+
    154  tag         g                     close
    155  tag         g                     open
    156  attribute   class                 edge
@@ -161,10 +169,10 @@
    160  tag         title                 close
    161  tag         path                  open
    162  raw         d                     M169.019,-236.301C179.782,-226.85 193.415,-214.88 205.242,-204.495
-   163  command     -                     M
+   163  command     M                     -
    164  float       1                     169.019
    165  float       2                     -236.301
-   166  command     -                     C
+   166  command     C                     -
    167  float       1                     179.782
    168  float       2                     -226.85
    169  float       3                     193.415
@@ -190,6 +198,8 @@
    189  content     polygon               
    190  tag         polygon               close
    191  content     g                     
+
+
    192  tag         g                     close
    193  tag         g                     open
    194  attribute   class                 node
@@ -215,6 +225,8 @@
    214  content     text                  Böhme
    215  tag         text                  close
    216  content     g                     
+
+
    217  tag         g                     close
    218  tag         g                     open
    219  attribute   class                 edge
@@ -224,10 +236,10 @@
    223  tag         title                 close
    224  tag         path                  open
    225  raw         d                     M72.0808,-161.937C73.5865,-153.598 75.4343,-143.364 77.1253,-133.998
-   226  command     -                     M
+   226  command     M                     -
    227  float       1                     72.0808
    228  float       2                     -161.937
-   229  command     -                     C
+   229  command     C                     -
    230  float       1                     73.5865
    231  float       2                     -153.598
    232  float       3                     75.4343
@@ -253,6 +265,8 @@
    252  content     polygon               
    253  tag         polygon               close
    254  content     g                     
+
+
    255  tag         g                     close
    256  tag         g                     open
    257  attribute   class                 node
@@ -278,6 +292,8 @@
    277  content     text                  ΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔΔ
    278  tag         text                  close
    279  content     g                     
+
+
    280  tag         g                     close
    281  tag         g                     open
    282  attribute   class                 edge
@@ -287,10 +303,10 @@
    286  tag         title                 close
    287  tag         path                  open
    288  raw         d                     M86.5455,-88.0167C90.0243,-77.3811 95.6611,-63.8704 104,-54 107.926,-49.3529 112.625,-45.0992 117.591,-41.2818
-   289  command     -                     M
+   289  command     M                     -
    290  float       1                     86.5455
    291  float       2                     -88.0167
-   292  command     -                     C
+   292  command     C                     -
    293  float       1                     90.0243
    294  float       2                     -77.3811
    295  float       3                     95.6611
@@ -330,6 +346,9 @@
    329  content     text                  Label has a ☃
    330  tag         text                  close
    331  content     g                     
+
+
+
    332  tag         g                     close
    333  tag         g                     open
    334  attribute   class                 node
@@ -355,6 +374,8 @@
    354  content     text                  Πηληϊάδεω Ἀχιλῆος
    355  tag         text                  close
    356  content     g                     
+
+
    357  tag         g                     close
    358  tag         g                     open
    359  attribute   class                 edge
@@ -364,10 +385,10 @@
    363  tag         title                 close
    364  tag         path                  open
    365  raw         d                     M230.341,-161.937C229.542,-153.719 228.564,-143.66 227.664,-134.406
-   366  command     -                     M
+   366  command     M                     -
    367  float       1                     230.341
    368  float       2                     -161.937
-   369  command     -                     C
+   369  command     C                     -
    370  float       1                     229.542
    371  float       2                     -153.719
    372  float       3                     228.564
@@ -393,6 +414,8 @@
    392  content     polygon               
    393  tag         polygon               close
    394  content     g                     
+
+
    395  tag         g                     close
    396  tag         g                     open
    397  attribute   class                 edge
@@ -402,10 +425,10 @@
    401  tag         title                 close
    402  tag         path                  open
    403  raw         d                     M211.763,-88.0092C201.944,-75.4058 188.405,-58.0272 177.37,-43.8632
-   404  command     -                     M
+   404  command     M                     -
    405  float       1                     211.763
    406  float       2                     -88.0092
-   407  command     -                     C
+   407  command     C                     -
    408  float       1                     201.944
    409  float       2                     -75.4058
    410  float       3                     188.405
@@ -439,8 +462,38 @@
    438  content     text                  Label has a ✔
    439  tag         text                  close
    440  content     g                     
+
+
+
    441  tag         g                     close
    442  content     g                     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
    443  tag         g                     close
    444  content     svg                   
+
    445  tag         svg                   close

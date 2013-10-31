@@ -5,57 +5,12 @@ use utf8;
 use warnings;
 use warnings  qw(FATAL utf8);    # Fatalize encoding glitches.
 
-use Moo;
+my($item_count);
+my($param_count);
 
-use Scalar::Util 'refaddr';
+our $logger;
 
-use Set::Array;
-
-use Types::Standard qw/Any Int Str/;
-
-has item_count =>
-(
-	default  => sub{return 0},
-	is       => 'rw',
-	isa      => Int,
-	required => 0,
-);
-
-has items =>
-(
-	default  => sub{return Set::Array -> new},
-	is       => 'rw',
-	isa      => Any,
-	required => 0,
-);
-
-has logger =>
-(
-	is       => 'rw',
-	isa      => Any,
-	required => 1,
-);
-
-has param_count =>
-(
-	default  => sub{return 0},
-	is       => 'rw',
-	isa      => Int,
-	required => 0,
-);
-
-our $myself;
-
-our $VERSION = '1.00';
-
-# ------------------------------------------------
-
-sub BUILD
-{
-	my($self) = @_;
-	$myself   = $self;
-
-} # End of BUILD.
+our $VERSION = '1.01';
 
 # ------------------------------------------------
 
@@ -65,10 +20,13 @@ sub boolean
 	$t1 = lc $t1;
 	$t1 = $t1 eq 'zero' ? 0 : 1;
 
-	$myself -> param_count($myself -> param_count + 1);
-	$myself -> new_item('boolean', $myself -> param_count, $t1);
-
-	return $t1;
+	return
+	{
+		count => ++$item_count,
+		name  => ++$param_count,
+		type  => 'boolean',
+		value => $t1,
+	};
 
 } # End of boolean.
 
@@ -76,12 +34,16 @@ sub boolean
 
 sub command
 {
-	my($hashref, $t1) = @_;
+	my($hashref, $t1, @t2) = @_;
+	$param_count = 0;
 
-	$myself -> new_item('command', '-', $t1);
-	$myself -> param_count(0);
-
-	return $t1;
+	return
+	{
+		count => ++$item_count,
+		name  => $t1,
+		type  => 'command',
+		value => [@t2],
+	};
 
 } # End of command.
 
@@ -91,12 +53,24 @@ sub float
 {
 	my($hashref, $t1) = @_;
 
-	$myself -> param_count($myself -> param_count + 1);
-	$myself -> new_item('float', $myself -> param_count, $t1);
-
-	return $t1;
+	return
+	{
+		count => ++$item_count,
+		name  => ++$param_count,
+		type  => 'float',
+		value => $t1,
+	};
 
 } # End of float.
+
+# ------------------------------------------------
+
+sub init
+{
+	$item_count  = 0;
+	$param_count = 0;
+
+} # End of init.
 
 # ------------------------------------------------
 
@@ -104,10 +78,13 @@ sub integer
 {
 	my($hashref, $t1) = @_;
 
-	$myself -> param_count($myself -> param_count + 1);
-	$myself -> new_item('integer', $myself -> param_count, $t1);
-
-	return $t1;
+	return
+	{
+		count => ++$item_count,
+		name  => ++$param_count,
+		type  => 'integer',
+		value => $t1,
+	};
 
 } # End of integer.
 
@@ -115,46 +92,13 @@ sub integer
 
 sub log
 {
-	my($hashref, $level, $s) = @_;
+	my($level, $s) = @_;
 	$level = 'notice' if (! defined $level);
 	$s     = ''       if (! defined $s);
 
-	$myself -> logger -> $level($s) if ($myself -> logger);
+	$logger -> $level($s) if ($logger);
 
 } # End of log.
-
-# --------------------------------------------------
-
-sub new_item
-{
-	my($self, $type, $name, $value) = @_;
-
-	$myself -> item_count($myself -> item_count + 1);
-	$myself -> items -> push
-		({
-			count => $myself -> item_count,
-			name  => $name,
-			type  => $type,
-			value => $value,
-		});
-
-} # End of new_item.
-
-# --------------------------------------------------
-
-sub report
-{
-	my($self)   = @_;
-	my($format) = '%6s  %-10s  %-20s  %s';
-
-	$myself -> log(info => sprintf($format, 'Count', 'Type', 'Name', 'Value') );
-
-	for my $item ($myself -> items -> print)
-	{
-		$myself -> log(info => sprintf($format, $$item{count}, $$item{type}, $$item{name}, $$item{value}) );
-	}
-
-} # End of report.
 
 # ------------------------------------------------
 
@@ -162,9 +106,13 @@ sub string
 {
 	my($hashref, $t1) = @_;
 
-	$myself -> new_item('string', '-', $t1);
-
-	return $t1;
+	return
+	{
+		count => ++$item_count,
+		name  => ++$param_count,
+		type  => 'string',
+		value => $t1,
+	};
 
 } # End of string.
 
@@ -186,10 +134,12 @@ See L<MarpaX::Languages::SVG::Parser/Synopsis>.
 
 Basically just utility routines for L<MarpaX::Languages::SVG::Parser>. Only used indirectly by L<Marpa::R2>.
 
-Specifially, calls to methods are triggered by items in the input stream matching elements of the current
+Specifially, calls to functions are triggered by items in the input stream matching elements of the current
 grammar (and Marpa does the calling).
 
-Outputs to a stack managed by L<Set::Array>. See L</items()>.
+Each action function returns a hashref, which Marpa gathers. The calling code
+L<MarpaX::Languages::SVG::Parser::SAXHandler> decodes the result and puts the hashrefs into a stack, described in
+the L<MarpaX::Languages::SVG::Parser/FAQ>.
 
 =head1 Installation
 
@@ -197,98 +147,62 @@ See L<MarpaX::Languages::SVG::Parser/Installation>.
 
 =head1 Constructor and Initialization
 
-C<new()> is called as C<< my($actions) = MarpaX::Languages::SVG::Parser::Actions -> new(k1 => v1, k2 => v2, ...) >>.
+This class has no constructor. L<Marpa::R2> fabricates an instance, but won't let us get access to it.
 
-It returns a new object of type C<MarpaX::Languages::SVG::Parser::Actions>.
-
-Key-value pairs accepted in the parameter list (see also the corresponding methods
-[e.g. L</logger([$log_object])>]):
+So, we use a global variable, C<$logger>, initialized in L<MarpaX::Languages::SVG::Parser::SAXHandler>,
+in case we need logging. Details:
 
 =over 4
 
 =item o logger => aLog::HandlerObject
 
 By default, an object of type L<Log::Handler> is created which prints to STDOUT,
-but given the default, nothing is actually printed.
+but given the default, nothing is actually printed unless the C<maxlevel> attribute of this object is changed
+in L<MarpaX::Languages::SVG::Parser>.
 
-Default: undef.
+Default: anObjectOfTypeLogHandler.
 
 =back
 
+Also, each new parse is preceeded by a call to the L</init()> function, to reset some counters global to this file.
+
 =head1 Methods
+
+None.
+
+=head1 Functions
 
 =head2 boolean($t1)
 
-Pushes the boolean $t1 onto the stack managed by $self -> items.
+Returns a hashref identifying the boolean $t1.
 
-=head2 command($t1)
+=head2 command($t1, @t2)
 
-Pushes the command $t1 onto the stack managed by $self -> items.
+Returns a hashref identifying the command $t1 and its parameters in @t2.
 
 =head2 float($t1)
 
-Pushes the float $t1 onto the stack managed by $self -> items.
+Returns a hashref identifying the float $t1.
+
+=head2 init()
+
+Resets some counters global to the file. This must be called at the start of each new parse.
 
 =head2 integer($t1)
 
-Pushes the integer $t1 onto the stack managed by $self -> items.
-
-=head2 item_count([$new_value])
-
-Here, the [] indicate an optional parameter.
-
-Get or set the counter used to populate the C<count> key in the hashref in the array of parsed tokens.
-
-=head2 items()
-
-Returns the instance of L<Set::Array> which manages the array of hashrefs holding the parsed tokens.
-
-$object -> items -> print returns an array ref.
-
-See L<MarpaX::Languages::SVG::Parser/Synopsis> for sample code.
-
-See also L</new_item($type, $name, $value)>.
+Returns a hashref identifying the integer $t1.
 
 =head2 log($level, $s)
 
-Calls $self -> logger -> log($level => $s) if ($self -> logger).
-
-=head2 logger([$log_object])
-
-Here, the [] indicate an optional parameter.
-
-Get or set the log object.
-
-$log_object must be a L<Log::Handler>-compatible object.
-
-To disable logging, just set logger to the empty string.
-
-Note: C<logger> is a parameter to new().
-
-=head2 new()
-
-This method is auto-generated by L<Moo>.
-
-=head2 new_item($type, $name, $value)
-
-Pushes another hashref onto the stack managed by $self -> items.
-
-=head2 param_count([$new_value])
-
-Here, the [] indicate an optional parameter.
-
-Get or set the counter used to populate the C<name> (sic) key in the hashref in the array of parsed tokens,
-in those cases that the array elements contain parameters for SVG commands.
-
-See L<MarpaX::Languages::SVG::Parser/FAQ> for a discussion of this complex issue.
-
-=head2 report()
-
-Prints the stack managed by $self -> items.
+Calls $logger -> log($level => $s) if ($logger).
 
 =head2 string($t1)
 
-Pushes the string $t1 onto the stack managed by $self -> items.
+Returns a hashref identifying the string $t1.
+
+=head1 FAQ
+
+See L<MarpaX::Languages::SVG::Parser/FAQ>.
 
 =head1 Author
 

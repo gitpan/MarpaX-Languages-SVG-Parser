@@ -19,14 +19,6 @@ use Types::Standard qw/Any Int Str/;
 
 extends 'XML::SAX::Base';
 
-has actions =>
-(
-	default  => sub{return ''},
-	is       => 'rw',
-	isa      => Any, # 'MarpaX::Languages::SVG::Parser::Actions'.
-	required => 0,
-);
-
 has grammar =>
 (
 	default  => sub{return ''},
@@ -83,7 +75,7 @@ has text_stack =>
 	required => 0,
 );
 
-our $VERSION = '1.00';
+our $VERSION = '1.01';
 
 # -----------------------------------------------
 
@@ -94,6 +86,40 @@ sub characters
 	$self -> text($self -> text . $$characters{Data});
 
 }	# End of characters.
+
+# ------------------------------------------------
+
+sub decode_result
+{
+	my($self, $result) = @_;
+	my(@worklist) = $result;
+
+	my($obj);
+	my($ref_type);
+	my(@stack);
+
+	do
+	{
+		$obj      = shift @worklist;
+		$ref_type = ref $obj;
+
+		if ($ref_type eq 'ARRAY')
+		{
+			unshift @worklist, @$obj;
+		}
+		elsif ($ref_type eq 'HASH')
+		{
+			push @stack, {%$obj};
+		}
+		else
+		{
+			die "Unsupported object type $ref_type\n" if ($ref_type);
+		}
+	} while (@worklist);
+
+	return [@stack];
+
+} # End of decode_result.
 
 # --------------------------------------------------
 
@@ -157,20 +183,17 @@ sub end_element
 
 sub init_marpa
 {
-	my($self, %args) = @_;
+	my($self, $attribute) = @_;
 
-	# This line is vital since it re-initializes these attributes:
-	# o item_count.
-	# o items.
+	# 2 of 2: Initialize the action class via global variables - Yuk!
+	# The point is that we don't create an action instance.
+	# Marpa creates one but we can't get our hands on it.
 
-	$self -> actions
-	(
-		MarpaX::Languages::SVG::Parser::Actions -> new(logger => $self -> logger)
-	);
+	MarpaX::Languages::SVG::Parser::Actions::init();
 
 	$self -> grammar
 	(
-		Marpa::R2::Scanless::G -> new({source => \get_data_section("$args{attribute}.bnf")})
+		Marpa::R2::Scanless::G -> new({source => \get_data_section("$attribute.bnf")})
 	);
 
 	$self -> recce
@@ -213,79 +236,60 @@ sub new_item
 
 } # End of new_item.
 
-# ------------------------------------------------
-
-sub reorder_items
-{
-	my($self)     = @_;
-	my(@items)    = @{$self -> actions -> items -> print};
-	my($previous) = 0;
-
-	# A (path) d's 'Mm' command is stacked as the 3 items: 1, 2 and m,
-	# because of the way Marpa triggers callbacks. Reorder to m, 1, 2.
-	# This logic must be applied to a range of commands, not just 'Mm'.
-
-	my($i, $item);
-	my($j);
-
-	for $i (0 .. $#items)
-	{
-		$item = $items[$i];
-
-		if ($$item{type} eq 'command')
-		{
-			$self -> new_item($$item{type}, $$item{name}, $$item{value});
-
-			for $j ($previous .. ($i - 1) )
-			{
-				$item = $items[$j];
-
-				$self -> new_item($$item{type}, $$item{name}, $$item{value});
-			}
-
-			$previous = $i + 1;
-		}
-	}
-
-	# If no commands were found, the items are just numbers, so transfer them.
-
-	if ($previous == 0)
-	{
-		for $i (0 .. $#items)
-		{
-			$item = $items[$i];
-
-			$self -> new_item($$item{type}, $$item{name}, $$item{value});
-		}
-	}
-
-} # End of reorder_items.
-
 # -----------------------------------------------
 
 sub run_marpa
 {
-	my($self, %args) = @_;
+	my($self, $attribute, $value) = @_;
 
 	# The 2 flags in the (path) d's 'Aa' parameter list are Booleans.
 	# Here they are converted into 'zero' and 'one' to hide them from the
 	# code looking for numbers. Later, their values are restored.
 
-	my($value) = ( ($args{attribute} eq 'd') && ($args{value} =~ /[Aa]/) )
-		? $self -> encode_booleans($args{value})
-		: $args{value};
+	$value = ( ($attribute eq 'd') && ($value =~ /[Aa]/) )
+		? $self -> encode_booleans($value)
+		: $value;
 
 	$self -> log(debug => "Parsing: $value");
-	$self -> init_marpa(%args);
+	$self -> init_marpa($attribute);
 	$self -> recce -> read(\$value);
 
 	my($result) = $self -> recce -> value;
 
 	die "Marpa's parse failed\n" if (! defined $result);
 
-	$self -> reorder_items;
+	for my $item (@{$self -> decode_result($$result)})
+	{
+		if ($$item{type} eq 'command')
+		{
+			$self -> new_item($$item{type}, $$item{name}, '-');
+
+			for my $param (@{$self -> decode_result($$item{value})})
+			{
+				$self -> new_item($$param{type}, $$param{name}, $$param{value});
+			}
+		}
+		else
+		{
+			$self -> new_item($$item{type}, $$item{name}, $$item{value});
+		}
+	}
 
 } # End of run_marpa.
+
+# -----------------------------------------------
+
+sub start_document
+{
+	my($self, $element) = @_;
+
+	# 1 of 2: Initialize the action class via global variables - Yuk!
+	# The point is that we don't create an action instance.
+	# Marpa creates one but we can't get our hands on it.
+
+	$MarpaX::Languages::SVG::Parser::Actions::logger = $self -> logger;
+
+} # End of start_document.
 
 # -----------------------------------------------
 
@@ -323,7 +327,7 @@ sub start_element
 		if ($special{$attribute})
 		{
 			$self -> new_item('raw', $attribute, $value);
-			$self -> run_marpa(attribute => $attribute, value => $value);
+			$self -> run_marpa($attribute, $value);
 		}
 		else
 		{
@@ -352,7 +356,7 @@ See L<MarpaX::Languages::SVG::Parser/Synopsis>.
 Basically just utility routines for L<MarpaX::Languages::SVG::Parser>. Only used indirectly by
 L<XML::SAX|XML::SAX::Base>.
 
-Specifically, parses a SVG file, and also runs L<Marpa::R2> to parse the attribute value of some tag/attribute
+Specifically, parses an SVG file, and also runs L<Marpa::R2> to parse the attribute value of some tag/attribute
 combinations. Each such attribute value has its own Marpa-style BNF.
 
 Outputs to a stack managed by L<Set::Array>. See L</items()>.
@@ -472,13 +476,6 @@ Get or set the recognizer object.
 
 It is always an instance of L<Marpa::R2::Scanless::R>.
 
-=head2 reorder_items()
-
-A (path) d's 'Mm' command is stacked as the 3 items: 1, 2 and m,
-because of the way Marpa triggers callbacks. Reorder to m, 1, 2.
-
-This logic must be applied to a range of commands.
-
 =head2 run_marpa(%args)
 
 Run's the instance of Marpa created in the call to L</init_marpa(%args)>.
@@ -496,6 +493,10 @@ See the docs for L</init_marpa(%args)> above for valid values.
 The string to be parsed, using the grammar named with (attribute => $string).
 
 =back
+
+=head2 start_document()
+
+Used as a way of initializing global variables in the action class.
 
 =head2 start_element($element)
 
@@ -516,6 +517,11 @@ See L</characters($characters)>.
 
 Manages a stack of text-per-tag, since the text within a tag can be split when the tag contains nested tags.
 With a stack, the inner tags can all have their own text.
+
+=head1 Credits
+
+The method L<decode_result($result)> is a re-worked version of L<MarpaX::Languages::C::AST::Util::Data::Find>'s
+process() method.
 
 =head1 Author
 
@@ -729,7 +735,7 @@ strings		::= string
 				| string string
 				| string string string
 
-string		::= letter			action => string
+string		::= letter		action => string
 
 # G0 stuff.
 
@@ -762,28 +768,28 @@ transform			::= matrix
 						| skewX
 						| skewY
 
-matrix				::= 'matrix' '('
+matrix				::= 'matrix' ('(')
 						number number number number number number
-						')'								action => command
+						(')')								action => command
 
-translate			::= 'translate' '(' number_set ')'	action => command
+translate			::= 'translate' ('(') number_set (')')	action => command
 
 number_set			::= number
 						| number number
 
-scale				::= 'scale' '(' number_set ')'		action => command
+scale				::= 'scale' ('(') number_set (')')		action => command
 
-rotate				::= 'rotate' '(' rotate_set ')'		action => command
+rotate				::= 'rotate' ('(') rotate_set (')')		action => command
 
 rotate_set			::= number
 						| number number
 
-skewX				::= 'skewX' '(' number ')'			action => command
+skewX				::= 'skewX' ('(') number (')')			action => command
 
-skewY				::= 'skewY' '(' number ')'			action => command
+skewY				::= 'skewY' ('(') number (')')			action => command
 
-number				::= float							action => float
-						| integer						action => integer
+number				::= float								action => float
+						| integer							action => integer
 
 # G0 stuff.
 

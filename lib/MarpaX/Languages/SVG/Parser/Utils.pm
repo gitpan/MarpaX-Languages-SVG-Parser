@@ -17,9 +17,9 @@ use MarpaX::Languages::SVG::Parser::Config;
 
 use Moo;
 
-use Types::Standard qw/HashRef/;
-
 use Text::Xslate 'mark_raw';
+
+use Types::Standard qw/HashRef/;
 
 has config =>
 (
@@ -29,7 +29,7 @@ has config =>
 	required => 0,
 );
 
-our $VERSION = '1.00';
+our $VERSION = '1.01';
 
 # ------------------------------------------------
 
