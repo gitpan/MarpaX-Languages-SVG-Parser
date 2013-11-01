@@ -6,8 +6,6 @@ use File::Slurp; # For read_file(), write_file().
 use File::Spec;
 use File::Temp;
 
-use MarpaX::Languages::SVG::Parser::Utils;
-
 use Test::More;
 
 # ------------------------------------------------
@@ -51,7 +49,7 @@ sub process
 
 my($data_dir_name) = 'data';
 
-for my $file_name (MarpaX::Languages::SVG::Parser::Utils -> new -> get_files($data_dir_name, 'svg') )
+for my $file_name (sort grep{/svg$/} read_dir('data', {prefix => 1}) )
 {
 	process($data_dir_name, $file_name);
 }

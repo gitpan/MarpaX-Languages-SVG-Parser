@@ -10,7 +10,6 @@ use Config;
 use Date::Simple;
 
 use File::Basename; # For basename().
-use File::Slurp;    # For read_dir().
 use File::Spec;
 
 use MarpaX::Languages::SVG::Parser::Config;
@@ -29,7 +28,7 @@ has config =>
 	required => 0,
 );
 
-our $VERSION = '1.01';
+our $VERSION = '1.02';
 
 # ------------------------------------------------
 
@@ -120,16 +119,6 @@ sub generate_demo_environment
 
 # ------------------------------------------------
 
-sub get_files
-{
-	my($self, $dir_name, $type) = @_;
-
-	return sort grep{/$type$/} read_dir($dir_name, {prefix => 1});
-
-} # End of get_files.
-
-# ------------------------------------------------
-
 1;
 
 =pod
@@ -175,12 +164,6 @@ Calls L<MarpaX::Languages::SVG::Parser::Utils/get_files($dir_name, $type)> and L
 Writes C<html/index.html>.
 
 See scripts/generate.demo.pl.
-
-=head2 get_files($dir_name, $type)
-
-Returns an array of full file names from the $dir_name directory, whose file names end in /$type$/.
-
-See scripts/*.pl and t/*.t.
 
 =head2 new()
 

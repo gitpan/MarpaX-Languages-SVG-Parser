@@ -1,5 +1,9 @@
 Revision history for Perl extension MarpaX::Languages::SVG::Parser.
 
+1.02  Fri Nov  1 15:51:00 2013
+	- Stop tests from requiring *::Utis, which uses *::Config, which is for my use only.
+	- Simplify t/test.fake.data.t by not 'use'ing unused modules.
+
 1.01  Tue Oct 29 16:23:00 2013
 	- Set utf8 (sic) unilaterally on the log output, if logging. This allows STDOUT to be redirected.
 		For non-utf8 input files (data/*.svg except data/utf8.01.svg), it will not be noticed.

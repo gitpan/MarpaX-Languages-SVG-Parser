@@ -58,23 +58,23 @@
    "provides" : {
       "MarpaX::Languages::SVG::Parser" : {
          "file" : "lib/MarpaX/Languages/SVG/Parser.pm",
-         "version" : "1.01"
+         "version" : "1.02"
       },
       "MarpaX::Languages::SVG::Parser::Actions" : {
          "file" : "lib/MarpaX/Languages/SVG/Parser/Actions.pm",
-         "version" : "1.01"
+         "version" : "1.02"
       },
       "MarpaX::Languages::SVG::Parser::Config" : {
          "file" : "lib/MarpaX/Languages/SVG/Parser/Config.pm",
-         "version" : "1.01"
+         "version" : "1.02"
       },
       "MarpaX::Languages::SVG::Parser::SAXHandler" : {
          "file" : "lib/MarpaX/Languages/SVG/Parser/SAXHandler.pm",
-         "version" : "1.01"
+         "version" : "1.02"
       },
       "MarpaX::Languages::SVG::Parser::Utils" : {
          "file" : "lib/MarpaX/Languages/SVG/Parser/Utils.pm",
-         "version" : "1.01"
+         "version" : "1.02"
       }
    },
    "release_status" : "stable",
@@ -83,5 +83,5 @@
          "http://www.perlfoundation.org/artistic_license_2_0"
       ]
    },
-   "version" : "1.01"
+   "version" : "1.02"
 }

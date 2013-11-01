@@ -4,21 +4,16 @@ use warnings;
 use Capture::Tiny 'capture';
 
 use File::Basename; # For basename().
+use File::Slurp;    # For read_dir().
 
 use Test::More;
 
 # ------------------------------------------------
 
-BEGIN
-{
-	use_ok('MarpaX::Languages::SVG::Parser');
-	use_ok('MarpaX::Languages::SVG::Parser::Utils');
-}
-
 my($attribute);
 my($result);
 
-for my $file (MarpaX::Languages::SVG::Parser::Utils -> new -> get_files('data', 'dat') )
+for my $file (sort grep{/dat$/} read_dir('data', {prefix => 1}) )
 {
 	$attribute = basename($file);
 	$attribute =~ s/^(\w+)(\..+)$/$1/;
