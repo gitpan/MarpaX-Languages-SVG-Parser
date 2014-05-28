@@ -75,7 +75,7 @@ has text_stack =>
 	required => 0,
 );
 
-our $VERSION = '1.02';
+our $VERSION = '1.04';
 
 # -----------------------------------------------
 
@@ -548,6 +548,8 @@ __DATA__
 
 :default			::= action => [values]
 
+lexeme default      = latm => 1
+
 # G1 stuff.
 
 :start 				::= d
@@ -672,6 +674,8 @@ whitespace			~ [\s]+
 
 :default			::= action => [values]
 
+lexeme default      = latm => 1
+
 # G1 stuff.
 
 :start 				::= coordinate_pairs
@@ -725,7 +729,9 @@ whitespace			~ [\s]+
 
 # This grammar is for 'preserveAspectRatio' attribute of various tags.
 
-:default	::= action => [values]
+:default	   ::= action => [values]
+
+lexeme default = latm => 1
 
 # G1 stuff.
 
@@ -753,6 +759,8 @@ whitespace	~ [\s]+
 # This grammar is for 'transform' attribute of various tags.
 
 :default			::= action => [values]
+
+lexeme default      = latm => 1
 
 # G1 stuff.
 
@@ -832,6 +840,8 @@ whitespace			~ [\s]+
 # This grammar is for the 'viewBox' attribute.
 
 :default			::= action => [values]
+
+lexeme default      = latm => 1
 
 # G1 stuff.
 

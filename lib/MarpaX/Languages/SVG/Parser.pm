@@ -91,7 +91,7 @@ has output_file_name =>
 	required => 0,
 );
 
-our $VERSION = '1.02';
+our $VERSION = '1.04';
 
 # ------------------------------------------------
 

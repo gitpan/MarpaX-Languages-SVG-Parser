@@ -111,5 +111,4 @@ scripts/test.file.pl
 scripts/test.fileset.pl
 t/test.fake.data.t
 t/test.real.data.t
-t/version.t
 xt/author/pod.t

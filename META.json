@@ -4,7 +4,7 @@
       "Ron Savage <ron@savage.net.au>"
    ],
    "dynamic_config" : 1,
-   "generated_by" : "Module::Build version 0.4005, CPAN::Meta::Converter version 2.131560",
+   "generated_by" : "Module::Build version 0.4204",
    "license" : [
       "artistic_2"
    ],
@@ -16,8 +16,7 @@
    "prereqs" : {
       "build" : {
          "requires" : {
-            "Test::More" : "0.94",
-            "Test::Version" : "1.002003"
+            "Test::More" : "0.94"
          }
       },
       "configure" : {
@@ -38,7 +37,7 @@
             "File::Spec" : "3.4",
             "Getopt::Long" : "2.41",
             "Log::Handler" : "0.79",
-            "Marpa::R2" : "2.07",
+            "Marpa::R2" : "2.082",
             "Moo" : "1.003001",
             "Path::Tiny" : "0.034",
             "Pod::Usage" : "1.63",
@@ -58,23 +57,23 @@
    "provides" : {
       "MarpaX::Languages::SVG::Parser" : {
          "file" : "lib/MarpaX/Languages/SVG/Parser.pm",
-         "version" : "1.02"
+         "version" : "1.04"
       },
       "MarpaX::Languages::SVG::Parser::Actions" : {
          "file" : "lib/MarpaX/Languages/SVG/Parser/Actions.pm",
-         "version" : "1.02"
+         "version" : "1.04"
       },
       "MarpaX::Languages::SVG::Parser::Config" : {
          "file" : "lib/MarpaX/Languages/SVG/Parser/Config.pm",
-         "version" : "1.02"
+         "version" : "1.04"
       },
       "MarpaX::Languages::SVG::Parser::SAXHandler" : {
          "file" : "lib/MarpaX/Languages/SVG/Parser/SAXHandler.pm",
-         "version" : "1.02"
+         "version" : "1.04"
       },
       "MarpaX::Languages::SVG::Parser::Utils" : {
          "file" : "lib/MarpaX/Languages/SVG/Parser/Utils.pm",
-         "version" : "1.02"
+         "version" : "1.04"
       }
    },
    "release_status" : "stable",
@@ -83,5 +82,5 @@
          "http://www.perlfoundation.org/artistic_license_2_0"
       ]
    },
-   "version" : "1.02"
+   "version" : "1.04"
 }
