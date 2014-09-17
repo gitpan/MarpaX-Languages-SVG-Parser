@@ -91,6 +91,7 @@ lib/MarpaX/Languages/SVG/Parser/Actions.pm
 lib/MarpaX/Languages/SVG/Parser/Config.pm
 lib/MarpaX/Languages/SVG/Parser/SAXHandler.pm
 lib/MarpaX/Languages/SVG/Parser/Utils.pm
+LICENSE
 Makefile.PL
 MANIFEST			This list of files
 META.json

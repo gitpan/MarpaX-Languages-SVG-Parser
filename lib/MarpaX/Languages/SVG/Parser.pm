@@ -91,7 +91,7 @@ has output_file_name =>
 	required => 0,
 );
 
-our $VERSION = '1.04';
+our $VERSION = '1.05';
 
 # ------------------------------------------------
 
@@ -1271,6 +1271,10 @@ The file Changes was converted into Changelog.ini by L<Module::Metadata::Changes
 =head1 Version Numbers
 
 Version numbers < 1.00 represent development versions. From 1.00 up, they are production versions.
+
+=head1 Repository
+
+L<https://github.com/ronsavage/MarpaX-Languages-SVG-Parser>
 
 =head1 Support
 

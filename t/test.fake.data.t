@@ -10,6 +10,8 @@ use Test::More;
 
 # ------------------------------------------------
 
+my($count) = 0;
+
 my($attribute);
 my($result);
 
@@ -23,6 +25,9 @@ for my $file (sort grep{/dat$/} read_dir('data', {prefix => 1}) )
 	(undef, undef, $result) = capture{system($^X, '-Ilib', 'scripts/test.file.pl', '-a', $attribute, '-i', $file)};
 
 	ok($result == 0, "Processed $file");
+	$count++;
 }
+
+print "# Internal test count: $count. \n";
 
 done_testing;

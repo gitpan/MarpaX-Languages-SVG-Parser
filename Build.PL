@@ -42,6 +42,13 @@ $class -> new
 	{
 		'Module::Build' => 0.3800,
 	},
+	meta_merge =>
+	{
+		resources =>
+		{
+			repository => 'https://github.com/dwimperl/MarpaX-Languages-SVG-Parser',
+		},
+	},
 	requires =>
 	{
 		'Capture::Tiny'           => 0.22,

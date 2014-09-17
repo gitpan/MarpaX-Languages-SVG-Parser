@@ -47,11 +47,15 @@ sub process
 
 # ------------------------------------------------
 
+my($count)         = 0;
 my($data_dir_name) = 'data';
 
 for my $file_name (sort grep{/svg$/} read_dir('data', {prefix => 1}) )
 {
 	process($data_dir_name, $file_name);
+	$count++;
 }
+
+print "# Internal test count: $count. \n";
 
 done_testing;

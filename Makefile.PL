@@ -78,6 +78,12 @@ if ($ExtUtils::MakeMaker::VERSION ge '6.46')
 		{
 			bugtracker => 'https://rt.cpan.org/Public/Dist/Display.html?Name=MarpaX-Languages-SVG-Parser',
 			license    => 'http://www.perlfoundation.org/artistic_license_2_0',
+			repository =>
+			{
+				type => 'git',
+				url  => 'https://github.com/ronsavage/MarpaX-Languages-SVG-Parser.git',
+				web  => 'https://github.com/ronsavage/MarpaX-Languages-SVG-Parser',
+			},
 		},
 	};
 }
