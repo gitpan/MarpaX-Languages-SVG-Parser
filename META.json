@@ -57,23 +57,23 @@
    "provides" : {
       "MarpaX::Languages::SVG::Parser" : {
          "file" : "lib/MarpaX/Languages/SVG/Parser.pm",
-         "version" : "1.05"
+         "version" : "1.06"
       },
       "MarpaX::Languages::SVG::Parser::Actions" : {
          "file" : "lib/MarpaX/Languages/SVG/Parser/Actions.pm",
-         "version" : "1.05"
+         "version" : "1.06"
       },
       "MarpaX::Languages::SVG::Parser::Config" : {
          "file" : "lib/MarpaX/Languages/SVG/Parser/Config.pm",
-         "version" : "1.05"
+         "version" : "1.06"
       },
       "MarpaX::Languages::SVG::Parser::SAXHandler" : {
          "file" : "lib/MarpaX/Languages/SVG/Parser/SAXHandler.pm",
-         "version" : "1.05"
+         "version" : "1.06"
       },
       "MarpaX::Languages::SVG::Parser::Utils" : {
          "file" : "lib/MarpaX/Languages/SVG/Parser/Utils.pm",
-         "version" : "1.05"
+         "version" : "1.06"
       }
    },
    "release_status" : "stable",
@@ -82,8 +82,8 @@
          "http://opensource.org/licenses/artistic-license-2.0.php"
       ],
       "repository" : {
-         "url" : "https://github.com/dwimperl/MarpaX-Languages-SVG-Parser"
+         "url" : "https://github.com/ronsavage/MarpaX-Languages-SVG-Parser"
       }
    },
-   "version" : "1.05"
+   "version" : "1.06"
 }

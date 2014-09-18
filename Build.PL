@@ -46,7 +46,7 @@ $class -> new
 	{
 		resources =>
 		{
-			repository => 'https://github.com/dwimperl/MarpaX-Languages-SVG-Parser',
+			repository => 'https://github.com/ronsavage/MarpaX-Languages-SVG-Parser',
 		},
 	},
 	requires =>

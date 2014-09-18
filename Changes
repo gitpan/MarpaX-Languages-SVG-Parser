@@ -1,5 +1,8 @@
 Revision history for Perl extension MarpaX::Languages::SVG::Parser.
 
+1.06  Fri Sep 19 09:15:00 2014
+	- Fix typo in repo in Build.PL.
+
 1.05  Wed Sep 17 17:22:00 2014
 	- Update Build.PL and Makefile.PL re putting this package on github.
 
